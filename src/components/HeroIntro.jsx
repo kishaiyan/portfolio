@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import myselfImage from "../assets/myself.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,7 +116,7 @@ const HeroIntro = () => {
             <div className="relative">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-sky-500 to-green-500 rounded-full blur-md opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
               <img
-                src="/myself.jpeg"
+                src={myselfImage}
                 alt="Picture of a developer"
                 className="relative w-36 h-36 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full object-cover border-4 border-slate-700 shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
                 onError={(e) => {

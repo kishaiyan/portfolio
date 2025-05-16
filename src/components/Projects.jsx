@@ -11,9 +11,9 @@ const Projects = () => {
   const [activeProject, setActiveProject] = useState(0);
   const projectsData = [
     {
-      id: "utilisplit",
-      name: "UtiliSplit — Intelligent Bill Management",
-      shortName: "UtiliSplit",
+      id: "splitmate",
+      name: "Splitmate — Intelligent Bill Management",
+      shortName: "Splitmate",
       description: [
         "Engineered a comprehensive bill-splitting application featuring IoT integration for real-time utility consumption monitoring and user-specific billing.",
         "Implemented an AI-powered anomaly detection system to identify unusual consumption patterns, providing users with actionable insights for energy optimization.",
@@ -21,8 +21,8 @@ const Projects = () => {
         "Architected a scalable serverless backend on AWS (Lambda, DynamoDB, IoT Core) capable of handling over 10,000 concurrent users with low latency.",
         "Integrated LangChain for advanced natural language processing capabilities, enabling intelligent chatbot support and automated report generation."
       ],
-      tech: "React Native, AWS Lambda, DynamoDB, AWS IoT Core, LangChain, GraphQL, Python, Node.js",
-      github: "https://github.com/kishanthangaraj/utilisplit",
+      tech: "React Native, AWS Lambda, DynamoDB, AWS IoT Core, LangChain, GraphQL, Python, Node.js, AWS Amplify, AWS EC2",
+      github: "https://github.com/kishaiyan/splitmateez.git",
       image: "https://placehold.co/600x400/1A202C/718096?text=UtiliSplit+Project&font=Inter"
     },
     {
@@ -35,38 +35,38 @@ const Projects = () => {
         "Ensured robust data security and user privacy through JWT-based authentication, biometric login options, and end-to-end data encryption.",
         "Engineered an offline-first architecture using local data caching and synchronization, ensuring uninterrupted functionality in remote agricultural areas with limited connectivity."
       ],
-      tech: "Flutter, Firebase (Firestore, Auth), TensorFlow Lite, PyTorch Mobile, Flask, Python, WebSocket, GCP",
-      github: "https://github.com/kishanthangaraj/cropsense",
+      tech: "Flutter, Firebase, TensorFlow Lite, PyTorch Mobile, Flask, Python, WebSocket, GCP, Swin Transformer",
+      github: "https://github.com/kishaiyan/Cropsense_.git",
       image: "https://placehold.co/600x400/1A202C/718096?text=CropSense+Project&font=Inter"
     },
     {
       id: "securevote",
-      name: "SecureVote — Enterprise Blockchain Voting System",
+      name: "SecureVote — Online Voting System",
       shortName: "SecureVote",
       description: [
-        "Architected and built a decentralized e-voting system for enterprise clients, leveraging zero-knowledge proofs to ensure voter anonymity and ballot integrity.",
-        "Implemented homomorphic encryption techniques for secure and private vote tallying, preventing any single point of failure or unauthorized access.",
-        "Developed a robust multi-factor authentication system incorporating WebAuthn standards and biometric verification for enhanced voter identity proofing.",
+        "Designed and developed the full voting pipeline—from ballot issuance to secure vote casting and encrypted tallying—leveraging React, Firebase, Node.js, and Express.js.",
+        "Integrated Multi-Factor Authentication (MFA) using WebAuthn standards and biometric verification. All user interactions and votes are encrypted and stored using industry-standard protocols.",
+        "Incorporated Zero-Knowledge Proofs (ZKPs) for voter anonymity and Homomorphic Encryption for secure, real-time vote counting—eliminating any single point of compromise.","Conducted rigorous security audits and penetration testing to address OWASP Top 10 threats and ensure SOC 2 Type II audit-readiness.",
         "Successfully achieved compliance with stringent security standards, including OWASP Top 10, and prepared for SOC 2 Type II auditing."
       ],
-      tech: "React, Solidity, Ethereum, Node.js, Express.js, WebAuthn, OAuth 2.0, IPFS, PostgreSQL",
-      github: "https://github.com/kishanthangaraj/securevote",
+      tech: "React, Node.js, Express.js, WebAuthn, OAuth 2.0, IPFS, PostgreSQL, Firbase",
+      github: "https://github.com/kishaiyan/electronic-voting-system.git",
       image: "https://placehold.co/600x400/1A202C/718096?text=SecureVote+Project&font=Inter"
     },
-    {
-      id: "ai_driven_ecom",
-      name: "AI-Driven E-commerce Personalization Engine",
-      shortName: "AI E-commerce",
-      description: [
-        "Led the development of an AI personalization engine for a major e-commerce platform, resulting in a 15% increase in conversion rates.",
-        "Utilized collaborative filtering and content-based filtering algorithms to provide tailored product recommendations.",
-        "Built a real-time user behavior tracking system to dynamically adjust recommendations and UI elements.",
-        "Deployed the engine on a Kubernetes cluster for high availability and scalability, processing millions of user interactions daily."
-      ],
-      tech: "Python, Scikit-learn, Spark MLlib, Kafka, Elasticsearch, React, Node.js, Kubernetes, Docker, Azure ML",
-      github: "https://github.com/your-repo/ai-ecommerce",
-      image: "https://placehold.co/600x400/1A202C/718096?text=AI+E-commerce&font=Inter"
-    }
+    // {
+    //   id: "ai_driven_ecom",
+    //   name: "AI-Driven E-commerce Personalization Engine",
+    //   shortName: "AI E-commerce",
+    //   description: [
+    //     "Led the development of an AI personalization engine for a major e-commerce platform, resulting in a 15% increase in conversion rates.",
+    //     "Utilized collaborative filtering and content-based filtering algorithms to provide tailored product recommendations.",
+    //     "Built a real-time user behavior tracking system to dynamically adjust recommendations and UI elements.",
+    //     "Deployed the engine on a Kubernetes cluster for high availability and scalability, processing millions of user interactions daily."
+    //   ],
+    //   tech: "Python, Scikit-learn, Spark MLlib, Kafka, Elasticsearch, React, Node.js, Kubernetes, Docker, Azure ML",
+    //   github: "https://github.com/your-repo/ai-ecommerce",
+    //   image: "https://placehold.co/600x400/1A202C/718096?text=AI+E-commerce&font=Inter"
+    // }
   ];
 
   // GSAP Animations
@@ -229,7 +229,7 @@ const Projects = () => {
                   Core Technologies:
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {currentProject.tech.split(', ').slice(0, 8).map((techItem, i) => (
+                  {currentProject.tech.split(', ').map((techItem, i) => (
                     <span
                       key={i}
                       className="px-2 py-1 rounded bg-slate-700/70 text-gray-300 text-xs border border-slate-600"
@@ -237,11 +237,7 @@ const Projects = () => {
                       {techItem}
                     </span>
                   ))}
-                  {currentProject.tech.split(', ').length > 8 && (
-                    <span className="px-2 py-1 rounded bg-slate-700/70 text-gray-300 text-xs border border-slate-600">
-                      +{currentProject.tech.split(', ').length - 8} more
-                    </span>
-                  )}
+                 
                 </div>
               </div>
               
