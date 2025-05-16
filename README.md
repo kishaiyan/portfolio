@@ -1,12 +1,25 @@
-# React + Vite
+# 🌐 Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, modern portfolio website built with **React 19**, **Vite**, **Tailwind CSS**, **GSAP animations**, **parallax effects**, and **Three.js** for 3D visuals. This project showcases your skills, projects, and professional background with smooth animations and an immersive UI/UX experience.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** – Modern UI library
+- **Vite** – Lightning-fast development and build tool
+- **Tailwind CSS** – Utility-first CSS for rapid styling
+- **GSAP** – Industry-standard animation library for smooth transitions
+- **Parallax Effects** – Create depth and motion for engaging scrolling
+- **Three.js** – Render 3D graphics in the browser
+- **Typed.js** – Typewriter-style text animation
 
-## Expanding the ESLint configuration
+## 📦 Dependencies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```json
+"dependencies": {
+  "@tailwindcss/vite": "^4.1.4",
+  "gsap": "^3.12.7",
+  "react": "^19.0.0",
+  "react-dom": "^19.0.0",
+  "three": "^0.175.0",
+  "typed-js": "^0.2.3"
+}
