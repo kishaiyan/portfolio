@@ -17,7 +17,7 @@ const Skills = () => {
   const skillsData = [
     { 
       title: "Languages & Frameworks", 
-      skills: ["JavaScript", "TypeScript", "Python", "Java", "React", "Node.js", "Next.js", "Spring Boot","django","Flask"],
+      skills: ["JavaScript", "TypeScript", "Python", "Java","express js", "Node.js", "Next.js", "Spring Boot","django","Flask"],
       icon: "code"
     },
     { 
@@ -27,7 +27,7 @@ const Skills = () => {
     },
     { 
       title: "Backend & Databases", 
-      skills: ["RESTful APIs", "GraphQL",,"grpc", "PostgreSQL", "MongoDB", "Firebase", "Microservices", "MySQL"],
+      skills: ["RESTful APIs", "GraphQL",,"grpc", "PostgreSQL", "MongoDB", "Firebase", "Microservices", "MySQL","WebSockets"],
       icon: "database"
     },
     { 

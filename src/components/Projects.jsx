@@ -90,9 +90,12 @@ const Projects = () => {
       );
     }
 
-    // Animate the initial content
-    if (projectContentRef.current) {
-      gsap.fromTo(
+    // Animate the initial content (project details area)
+    // This needs to be triggered after the initial project data is set.
+    // If it's already handled by the activeProject useEffect, this specific one might be redundant
+    // or could be merged. For now, assuming it's for the first load.
+    if (projectContentRef.current && projectsData.length > 0) {
+       gsap.fromTo(
         projectContentRef.current,
         { opacity: 0, y: 20 },
         {
@@ -100,11 +103,11 @@ const Projects = () => {
           y: 0,
           duration: 0.5,
           ease: 'power3.out',
-          delay: 0.2,
+          delay: 0.2, // Small delay to ensure title animation starts
         }
       );
     }
-  }, []);
+  }, []); // Runs once on mount
 
   // Animation for project content change
   useEffect(() => {
@@ -115,13 +118,12 @@ const Projects = () => {
         duration: 0.2,
         ease: 'power2.in',
         onComplete: () => {
-          // Update content (handled by React state change)
-          // Then fade in
-          gsap.to(projectContentRef.current, { 
-            opacity: 1, 
-            duration: 0.3, 
-            ease: 'power2.out' 
-          });
+          // Content updates via React state change (activeProject)
+          // Then fade in the new content
+          gsap.fromTo(projectContentRef.current, 
+            { opacity: 0, y: 10 }, // Start slightly from bottom
+            { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+          );
         },
       });
     }
@@ -129,7 +131,14 @@ const Projects = () => {
 
   const currentProject = projectsData[activeProject];
   
-
+  if (!currentProject) {
+    // Handle case where projectsData might be empty or activeProject is out of bounds
+    return (
+        <section id="projects" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-slate-900 text-gray-100 h-screen flex flex-col justify-center items-center">
+            <p>No projects to display.</p>
+        </section>
+    );
+  }
 
   return (
     <section
@@ -137,9 +146,10 @@ const Projects = () => {
       ref={sectionRef}
       className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-slate-900 text-gray-100 h-screen flex flex-col"
     >
+      {/* Title */}
       <h2
         ref={titleRef}
-        className="text-3xl sm:text-4xl font-bold text-center mb-6 tracking-tight"
+        className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 tracking-tight"
       >
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-green-400">
           Featured
@@ -149,151 +159,121 @@ const Projects = () => {
         </span>
       </h2>
 
-      <div className="flex flex-col md:flex-row gap-4 flex-grow overflow-hidden">
-        {/* Project Selection Tabs - Horizontal on mobile, vertical sidebar on larger screens */}
-        <div className="md:hidden overflow-x-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 mb-4">
-          <div className="flex space-x-2 p-1">
-            {projectsData.map((project, index) => (
-              <button
-                key={project.id}
-                onClick={() => setActiveProject(index)}
-                className={`whitespace-nowrap px-4 py-2 rounded-lg text-sm transition-all duration-200 
-                  ${activeProject === index 
-                    ? 'bg-gradient-to-r from-sky-600 to-cyan-600 text-white font-medium shadow-md' 
-                    : 'bg-slate-800 text-gray-300 hover:bg-slate-700'}`}
-              >
-                {project.shortName}
-              </button>
-            ))}
-          </div>
+      {/* Horizontally Scrollable Project List */}
+      <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 py-2 mb-6 sm:mb-8">
+        <div className="flex flex-nowrap space-x-2 sm:space-x-3 px-1 justify-start sm:justify-center min-w-max sm:min-w-0"> {/* justify-center on sm+ if tabs don't fill width */}
+          {projectsData.map((project, index) => (
+            <button
+              title={`${project.shortName} button`}
+              key={project.id}
+              onClick={() => setActiveProject(index)}
+              className={`whitespace-nowrap px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm transition-all duration-200 
+                ${activeProject === index 
+                  ? 'bg-gradient-to-r from-sky-600 to-cyan-600 text-white font-medium shadow-lg transform scale-105' 
+                  : 'bg-slate-800 text-gray-300 hover:bg-slate-700 hover:text-sky-300'}`}
+            >
+              {project.shortName}
+            </button>
+          ))}
         </div>
+      </div>
 
-        {/* Sidebar for larger screens */}
-        <aside className="hidden md:block md:w-1/4 xl:w-1/5 flex-shrink-0">
-          <div className="sticky top-24 bg-slate-800/90 backdrop-blur-sm rounded-lg border border-slate-700 overflow-hidden">
-            <h3 className="text-base font-medium text-sky-300 py-2 px-3 border-b border-slate-700 bg-slate-800/50">
-              Project Portfolio
+      {/* Main Project Content Area */}
+      <main 
+        ref={projectContentRef} 
+        // Initial opacity set to 0 for GSAP fade-in
+        className="w-full flex-grow bg-slate-800/90 backdrop-blur-sm rounded-lg border border-slate-700 overflow-hidden flex flex-col opacity-0" 
+      >
+        <div className="flex flex-col lg:flex-row h-full">
+          {/* Left side - image & details */}
+          <div className="lg:w-1/2 p-4 sm:p-5 flex flex-col">
+            <div className="relative w-full h-36 sm:h-48 lg:h-56 mb-3 sm:mb-4 overflow-hidden rounded-lg shadow-lg">
+              <img
+                src={currentProject.image}
+                alt={`${currentProject.name} preview`}
+                className="w-full h-full object-cover border border-slate-600"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src="https://placehold.co/600x400/1A202C/4A5568?text=Image+Not+Available&font=Inter";
+                }}
+              />
+            </div>
+            
+            <h3 className="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-400">
+              {currentProject.name.split('—')[0]}
             </h3>
-            <nav className="max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-thin">
-              <ul>
-                {projectsData.map((project, index) => (
-                  <li key={project.id}>
-                    <button
-                      onClick={() => setActiveProject(index)}
-                      className={`w-full text-left px-3 py-2 transition-all duration-200 text-sm
-                        ${activeProject === index
-                          ? 'bg-gradient-to-r from-sky-600 to-cyan-600 text-white font-medium'
-                          : 'text-gray-300 hover:bg-slate-700/50 hover:text-sky-300'
-                        }
-                        ${index === 0 ? '' : 'border-t border-slate-700/50'}`}
-                    >
-                      {project.shortName}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        </aside>
-
-        {/* Main Project Content - Adjusted for single screen fit */}
-        <main 
-          ref={projectContentRef} 
-          className="flex-grow md:w-3/4 xl:w-4/5 bg-slate-800/90 backdrop-blur-sm rounded-lg border border-slate-700 overflow-hidden flex flex-col"
-        >
-          <div className="flex flex-col lg:flex-row h-full">
-            {/* Left side - image & details */}
-            <div className="lg:w-1/2 p-4 flex flex-col">
-              <div className="relative w-full h-32 sm:h-40 lg:h-48 mb-3 overflow-hidden rounded-lg">
-                <img
-                  src={currentProject.image}
-                  alt={`${currentProject.name} preview`}
-                  className="w-full h-full object-cover border border-slate-600"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src="https://placehold.co/600x400/1A202C/4A5568?text=Image+Not+Available&font=Inter";
-                  }}
-                />
-              </div>
-              
-              <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-400">
-                {currentProject.name.split('—')[0]}
-              </h3>
-              
-              <p className="text-xs text-sky-300/80 mb-3">
-                {currentProject.name.split('—')[1]?.trim()}
-              </p>
-              
-              <div className="mb-auto">
-                <h4 className="text-sm font-medium text-sky-300 mb-2">
-                  Core Technologies:
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {currentProject.tech.split(', ').map((techItem, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 rounded bg-slate-700/70 text-gray-300 text-xs border border-slate-600"
-                    >
-                      {techItem}
-                    </span>
-                  ))}
-                 
-                </div>
-              </div>
-              
-              <div className="mt-3">
-                <a
-                  href={currentProject.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-sky-500 to-cyan-500 text-white text-sm font-medium hover:from-sky-600 hover:to-cyan-600 transition-all duration-200"
-                >
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
+            
+            <p className="text-xs sm:text-sm text-sky-300/80 mb-3 sm:mb-4">
+              {currentProject.name.split('—')[1]?.trim()}
+            </p>
+            
+            {/* This div will push the GitHub link to the bottom because of mb-auto */}
+            <div className="mb-auto"> 
+              <h4 className="text-xs sm:text-sm font-semibold text-sky-300 mb-1.5 sm:mb-2">
+                Core Technologies:
+              </h4>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {currentProject.tech.split(', ').map((techItem, i) => (
+                  <span
+                    key={i}
+                    className="px-2 py-1 rounded bg-slate-700/70 text-gray-300 text-[0.7rem] sm:text-xs border border-slate-600"
                   >
-                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                  </svg>
-                  View Code
-                </a>
+                    {techItem}
+                  </span>
+                ))}
               </div>
             </div>
             
-            {/* Right side - description */}
-            <div className="lg:w-1/2 p-4 border-t lg:border-t-0 lg:border-l border-slate-700 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
-              <h4 className="text-sm font-medium text-sky-300 mb-2 flex justify-between items-center">
-                <span>Key Features & Achievements:</span>
-                
-              </h4>
-              
-              <ul className="space-y-2 text-gray-300 text-xs sm:text-sm">
-                {currentProject.description.map((desc, i) => (
-                  <li key={i} className="flex items-start">
-                    <svg
-                      className="w-4 h-4 text-cyan-400 mr-1.5 mt-0.5 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                    <span>{desc}</span>
-                  </li>
-                ))}
-                
-                
-              </ul>
+            <div className="mt-3 sm:mt-4">
+              <a
+                title={`github link to ${currentProject.shortName}`}
+                href={currentProject.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-gray-900 text-white text-xs sm:text-sm font-medium hover:bg-black transition-all duration-200 shadow hover:shadow-md"
+              >
+                <svg
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+                View Code
+              </a>
             </div>
           </div>
-        </main>
-      </div>
+          
+          {/* Right side - description */}
+          <div className="lg:w-1/2 p-4 sm:p-5 border-t lg:border-t-0 lg:border-l border-slate-700 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+            <h4 className="text-xs sm:text-sm font-semibold text-sky-300 mb-2 sm:mb-3 flex justify-between items-center">
+              <span>Key Features & Achievements:</span>
+            </h4>
+            
+            <ul className="space-y-1.5 sm:space-y-2 text-gray-300 text-[0.75rem] sm:text-sm">
+              {currentProject.description.map((desc, i) => (
+                <li key={i} className="flex items-start">
+                  <svg
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 mr-1.5 mt-0.5 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span>{desc}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </main>
     </section>
   );
 };

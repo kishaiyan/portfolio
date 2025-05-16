@@ -140,6 +140,7 @@ const ParallaxHero = () => {
 
         <div className="mt-8 md:mt-12 flex justify-center">
           <a
+            title='Take a tour around portfolio'
             ref={buttonRef}
             href="#intro"
             className="group relative inline-flex items-center overflow-hidden rounded-full border-2 border-cyan-400 px-5 py-2 sm:px-6 md:px-8 md:py-3 focus:outline-none"

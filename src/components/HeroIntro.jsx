@@ -157,12 +157,14 @@ const HeroIntro = () => {
               className="mt-4 flex flex-col sm:flex-row justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto"
             >
               <a
+                title="contact me via mail"
                 href="mailto:kishaiyanthangaraj@gmail.com"
                 className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-green-500/20 backdrop-blur-lg border border-cyan-400/30 text-white text-sm sm:text-base font-semibold hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 text-center"
               >
                 📬 Contact Me
               </a>
               <a
+                title="Connect me via github"
                 href="https://github.com/kishaiyan"
                 target="_blank"
                 rel="noopener noreferrer"
