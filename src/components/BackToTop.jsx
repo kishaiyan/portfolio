@@ -77,7 +77,7 @@ const BackToTop = ({ sections }) => {
       title={isUpArrow ? 'Scroll to top':'Scroll to next section' 
       }
       onClick={handleClick}
-      className="fixed bottom-6 right-6 p-3 sm:p-4 rounded-full bg-gradient-to-r from-cyan-500 to-green-500 text-white shadow-lg hover:scale-110 transition-transform duration-300 z-50"
+      className="fixed bottom-6 left-6 p-3 sm:p-4 rounded-full bg-gradient-to-br from-cyan-500 to-green-500 text-white shadow-lg hover:scale-110 transition-transform duration-300 z-50"
     >
       <svg
         className="w-5 h-5 sm:w-6 sm:h-6"
