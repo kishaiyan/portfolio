@@ -78,6 +78,18 @@ const Navigation = () => {
                 {section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ')}
               </button>
             ))}
+            <a
+              href="/portfolio/19-8-2025_RESUME.pdf"
+              download="Kishan_Thangaraj_Resume.pdf"
+              title="Download Resume"
+              className="nav-item text-cyan-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 opacity-0 flex items-center space-x-1"
+              style={{ transform: 'translateY(-20px)', transition: 'opacity 0.8s, transform 0.8s' }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Resume</span>
+            </a>
           </div>
           
           <div className="sm:hidden flex items-center">
@@ -106,6 +118,17 @@ const Navigation = () => {
                 {section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ')}
               </button>
             ))}
+            <a
+              href="/portfolio/19-8-2025_RESUME.pdf"
+              download="Kishan_Thangaraj_Resume.pdf"
+              title="Download Resume"
+              className="block w-full text-left text-cyan-400 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 flex items-center space-x-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Resume</span>
+            </a>
           </div>
         </div>
       )}
